@@ -4,20 +4,19 @@ metadata:
   name: microservices
 spec:
   generators:
-    - list:
-        elements:
-          - name: platform
-            path: charts/platform
-          - name: user
-            path: charts/user
-          - name: search
-            path: charts/search
-          - name: payment
-            path: charts/payment
+    - git:
+        repoURL: https://github.com/YOUR_ORG/YOUR_REPO
+        revision: HEAD
+
+        directories:
+          - path: charts/*   # 👈 THIS IS THE MAGIC
+          #- path: charts/platform
+          #  exclude: charts/platform/tests
 
   template:
     metadata:
-      name: '{{name}}'
+      name: '{{path.basename}}'
+
     spec:
       project: default
 
@@ -25,6 +24,7 @@ spec:
         repoURL: https://github.com/YOUR_ORG/YOUR_REPO
         targetRevision: HEAD
         path: '{{path}}'
+
         helm:
           valueFiles:
             - ../../environments/dev/values.yaml
