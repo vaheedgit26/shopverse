@@ -1,1 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: microservices
+spec:
+  generators:
+    - list:
+        elements:
+          - name: platform
+            path: charts/platform
+          - name: user
+            path: charts/user
+          - name: search
+            path: charts/search
+          - name: payment
+            path: charts/payment
 
+  template:
+    metadata:
+      name: '{{name}}'
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/YOUR_ORG/YOUR_REPO
+        targetRevision: HEAD
+        path: '{{path}}'
+        helm:
+          valueFiles:
+            - ../../environments/dev/values.yaml
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: default
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
