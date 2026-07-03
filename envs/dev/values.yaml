@@ -1,1 +1,7 @@
+global:
+  db:
+    host: mydb-dev.abc123.rds.amazonaws.com
+    port: "5432"
 
+  app:
+    env: dev
