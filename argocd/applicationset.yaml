@@ -37,3 +37,8 @@ spec:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+          - CreateNamespace=true         # Creates namespace
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
+          - PruneLast=true
