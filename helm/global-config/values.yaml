@@ -1,1 +1,10 @@
+namespace: shopverse-dev
 
+configmap:
+  name: global-config
+
+data:
+  DB_HOST: "mysql-endpoint"
+  DB_PORT: "3306"
+  DB_NAME: "shopverse"
+  FRONTEND_ORIGIN: "*"
