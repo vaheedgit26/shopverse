@@ -1,5 +1,9 @@
-image:
-  repository: nginx
-  tag: latest
+image: {}
+deployment: {}
+service: {}
+resources: {}
+probes:
+  liveness: {}
+  readiness: {}
+  startup: {}
 
-replicaCount: 1
