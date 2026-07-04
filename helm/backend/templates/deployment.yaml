@@ -17,7 +17,7 @@ spec:
         checksum/config: {{ include "user.config" . | sha256sum }}
     spec:
       containers:
-        - name: user
+        - name: nginx  # user
           image: nginx # "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 80
