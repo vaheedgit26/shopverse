@@ -1,71 +1,25 @@
-namespace: shopverse-dev
-# ──────────────────────────────────────
-# FRONTEND
-# ──────────────────────────────────────
-image:
-  uri: 254405569649.dkr.ecr.us-east-1.amazonaws.com
-  name: shopverse-frontend
-  version: v1
+namespace: default
+image: {}
+deployment: {}
+service: {}
+labels: {}
 
-imagePullPolicy: Always
+imagePullPolicy: IfNotPresent
 terminationGracePeriodSeconds: 30
 
-labels: 
-  app: shopverse
-  component: frontend
-  env: dev
-
-deployment:
-  name: frontend-deploy
-  replicas: 1
-    
-service:
-  name: frontend-svc
-  type: ClusterIP
-  port: 8080
-  targetPort: 8080
-
-#configmap:
-#  name: frontend-config
-
-#secret:
-#  name: shopverse-dev-mysql-jwt-credentials
-
-podSecurityContext:
-  fsGroup: 2000
-  runAsNonRoot: true
-  runAsUser: 1000
-
-containerSecurityContext:
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 101   # nginx user(101)  
-
-resources:
-  requests:
-    cpu: "50m"
-    memory: "64Mi"
-  limits:
-    cpu: "100m"
-    memory: "128Mi"
-
-probes:
-  readinessProbe:
-    httpGet:
-    path: /health
-    port: 8080
-    initialDelaySeconds: 5
-    periodSeconds: 10
-
-  livenessProbe:
-    httpGet:
-      path: /health
-      port: 8080
-      initialDelaySeconds: 20
-      periodSeconds: 30
-        
+configmap:
+  name: ""
   
+secret:
+  name: ""
+  
+imagePullSecrets: []
+podAnnotations: {}
+podSecurityContext: {}
+containerSecurityContext: {}
+
+resources: {}
+probes:
+  livenessProbe: {}
+  readinessProbe: {}
+  startupProbe: {}
