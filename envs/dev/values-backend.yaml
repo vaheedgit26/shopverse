@@ -40,8 +40,6 @@ secrets:
     global:
       - global-secret
 
-
-
 podSecurityContext:
   fsGroup: 2000
   runAsNonRoot: true
