@@ -23,8 +23,7 @@ spec:
     spec:
       # imagePullSecrets:
       # serviceAccountName: {{ include "pharma-service.serviceAccountName" . }}
-      # securityContext:
-      # terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
