@@ -26,11 +26,21 @@ service:
   port: 8080
   targetPort: 8080
 
-configmap:
-  name: global-backend-config
+configmaps:
+  envFrom:
+    local:
+      - backend-config
+    global:
+      - global-config
+      
+secrets:
+  envFrom:
+    local:
+      - backend-secret
+    global:
+      - global-secret
 
-secret:
-  name: shopverse-dev-mysql-jwt-credentials
+
 
 podSecurityContext:
   fsGroup: 2000
