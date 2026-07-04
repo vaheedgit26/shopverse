@@ -1,7 +1,7 @@
 namespace: shopverse-dev
 
 configmap:
-  name: global-config
+  name: global-backend-config
 
 data:
   DB_HOST: "mysql-endpoint"
