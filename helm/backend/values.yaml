@@ -5,6 +5,7 @@ service: {}
 labels: {}
 
 imagePullPolicy: IfNotPresent
+terminationGracePeriodSeconds: 30
 
 configmap:
   name: ""
