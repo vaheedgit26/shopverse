@@ -41,7 +41,7 @@ spec:
 
           {{- with .Values.probes.startupProbe }}
           startupProbe:
-            {{ toYaml . | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
 
           {{- with .Values.probes.readinessProbe }}
