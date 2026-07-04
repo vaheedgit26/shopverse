@@ -1,7 +1,9 @@
 global:
   db:
-    host: DB-HOST-1   # mydb-dev.abc123.rds.amazonaws.com
-    port: "5432"
+    mysql:
+      host: DB-HOST-1   # mydb-dev.abc123.rds.amazonaws.com
+      port: 5432
+      database: shopverse
 
   app:
     env: dev
