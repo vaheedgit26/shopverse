@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.deployment.name }}
+  name: {{ .Values.deployment.name }}   # {{ .Release.Name }}
   namespace: {{ .Values.namespace }}
   {{- with .Values.labels }}
   labels:
@@ -61,5 +61,3 @@ spec:
           livenessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-
-            
