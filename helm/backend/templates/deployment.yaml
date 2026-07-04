@@ -28,11 +28,19 @@ spec:
           ports:
             - containerPort: {{ .Values.service.targetPort }} # 8080
               protocol: TCP
+
+          {{- if or .Values.configmap.name .Values.secret.name }}
           envFrom:
+            {{- with .Values.configmap.name }}
             - configMapRef:
-                name: {{ .Values.configmap.name }}  # shopverse-config
+                name: {{ . }}  # shopverse-config
+            {{- end }}
+            
+            {{- with .Values.secret.name }}    
             - secretRef:
-                name: {{ .Values.secret.name }}     # shopverse-dev-mysql-jwt-credentials
+                name: {{ . }}  # shopverse-dev-mysql-jwt-credentials
+            {{- end }}
+          {{- end }}
                 
           {{- with .Values.resources }}      
           resources:
