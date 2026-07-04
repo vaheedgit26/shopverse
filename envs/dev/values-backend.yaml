@@ -23,31 +23,25 @@ secret:
   name: shopverse-dev-mysql-jwt-credentials
 
 resources:
-  enabled: true
-  config:
-    requests: 
-      cpu: "100m"
-      memory: "128Mi" 
-    limits:
-      cpu: "200m"
-      memory: "256Mi"
+  requests: 
+    cpu: "100m"
+    memory: "128Mi" 
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
 
 
 probes:
   livenessProbe:
-    enabled: true
-    config: 
-      httpGet:
-        path: /health
-        port: 8080
-        initialDelaySeconds: 15
-        periodSeconds: 30
+    httpGet:
+      path: /health
+      port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 30
         
   readinessProbe:
-    enabled: true
-    config:
-      httpGet:
-        path: /health
-        port: 8080
-        initialDelaySeconds: 10
-        periodSeconds: 10
+    httpGet:
+    path: /health
+    port: 8080
+    initialDelaySeconds: 10
+    periodSeconds: 10
