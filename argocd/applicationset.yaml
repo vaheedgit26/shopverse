@@ -29,6 +29,10 @@ spec:
       files:
         - path: apps/*/Chart.yaml
 
+    # {{path}}          → apps/backend/Chart.yaml
+    # {{path.dirname}}  → apps/backend   ✅ IMPORTANT
+    # {{path.basename}} → Chart.yaml
+
     # - git:
     #     repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
     #     revision: HEAD
@@ -40,7 +44,7 @@ spec:
   # =========================================
   template:
     metadata:
-      name: '{{name | default path.basename}}'
+      name: "{{name | default path.dirname}}"     # '{{name | default path.basename}}'
       namespace: argocd
       annotations:
         # Platform uses its wave, services default to 0
@@ -50,7 +54,7 @@ spec:
       project: default
 
       source:
-        repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
+        repoURL: https://github.com/vaheedgit26/shopverse.git
         targetRevision: HEAD
         path: '{{path}}'
 
