@@ -7,7 +7,7 @@ image:
   name: shopverse-backend
   version: v1
   
-containerName: frontend
+containerName: backend
 imagePullPolicy: Always
 terminationGracePeriodSeconds: 30
 
