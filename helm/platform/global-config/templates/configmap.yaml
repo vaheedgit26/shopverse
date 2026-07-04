@@ -8,5 +8,3 @@ metadata:
 data:
   DB_HOST: {{ .Values.data.DB_HOST | quote }}
   DB_PORT: {{ .Values.data.DB_PORT | quote }}
-  DB_NAME: {{ .Values.data.DB_NAME | quote }}
-  FRONTEND_ORIGIN: {{ .Values.data.FRONTEND_ORIGIN | quote }}
