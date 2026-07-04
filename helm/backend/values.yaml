@@ -11,6 +11,10 @@ configmap:
   
 secret:
   name: ""
+  
+imagePullSecrets: []
+podAnnotations: {}
+podSecurityContext: {}
 
 resources: {}
 probes:
