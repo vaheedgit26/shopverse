@@ -20,6 +20,7 @@ deployment:
     
 service:
   name: backend-svc
+  type: ClusterIP
   port: 8080
   targetPort: 8080
 
@@ -31,6 +32,15 @@ secret:
 
 podSecurityContext:
   fsGroup: 2000
+  runAsNonRoot: true
+  runAsUser: 1000
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
 
