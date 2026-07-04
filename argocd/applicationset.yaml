@@ -21,17 +21,19 @@ spec:
     # =========================================
     # 🚀 SERVICES (AUTO DISCOVERY)
     # =========================================
+    # Scans files, not directories
+    # Only picks folders that contain Chart.yaml
     - git:
-        repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
-        revision: HEAD
-        directories:
-          - path: apps/*
+      repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
+      revision: HEAD
+      files:
+        - path: apps/*/Chart.yaml
 
     # - git:
-    # repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
-    # revision: HEAD
-    # files:
-    #  - path: apps/*/Chart.yaml
+    #     repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
+    #     revision: HEAD
+    #     directories:
+    #       - path: apps/*
 
   # =========================================
   # 🎯 SINGLE TEMPLATE (USED BY BOTH)
