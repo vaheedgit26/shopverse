@@ -16,6 +16,7 @@ secret:
 imagePullSecrets: []
 podAnnotations: {}
 podSecurityContext: {}
+containerSecurityContext: {}
 
 resources: {}
 probes:
