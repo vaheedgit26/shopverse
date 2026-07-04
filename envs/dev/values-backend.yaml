@@ -32,9 +32,20 @@ resources:
 
 
 probes:
-  liveness:
+  livenessProbe:
+    enabled: true
+    config: 
+      httpGet:
+        path: /health
+        port: 8080
+        initialDelaySeconds: 15
+        periodSeconds: 30
+        
+  readinessProbe:
     enabled: true
     config:
       httpGet:
         path: /health
         port: 8080
+        initialDelaySeconds: 10
+        periodSeconds: 10
