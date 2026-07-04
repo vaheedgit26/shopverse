@@ -8,6 +8,7 @@ image:
   version: v1
 
 imagePullPolicy: Always
+terminationGracePeriodSeconds: 30
 
 labels: 
   app: shopverse
