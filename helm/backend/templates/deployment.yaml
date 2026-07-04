@@ -20,6 +20,9 @@ spec:
       labels:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      annotations:
+        checksum/backend-config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}   # ✅ LOCAL CONFIG → checksum
+        reloader.stakater.com/auto: "true"  # ✅ GLOBAL CONFIG → reloader
     spec:
       # imagePullSecrets:
       # serviceAccountName: {{ include "pharma-service.serviceAccountName" . }}
