@@ -1,44 +1,58 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
+
 metadata:
-  name: microservices
+  name: shopverse-applicationset
+  namespace: argocd
+
 spec:
   generators:
+
+    # =========================================
+    # 🌍 PLATFORM (STATIC - FIRST)
+    # =========================================
+    - list:
+        elements:
+          - name: platform
+            path: platform/global-config
+            namespace: shopverse-dev
+            wave: "-1"
+
+    # =========================================
+    # 🚀 SERVICES (AUTO DISCOVERY)
+    # =========================================
     - git:
-        repoURL: https://github.com/YOUR_ORG/YOUR_REPO
+        repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
         revision: HEAD
-
         directories:
-          - path: charts/*   # 👈 THIS IS THE MAGIC
-          #- path: charts/platform
-          #  exclude: charts/platform/tests
+          - path: apps/*
 
+  # =========================================
+  # 🎯 SINGLE TEMPLATE (USED BY BOTH)
+  # =========================================
   template:
     metadata:
-      name: '{{path.basename}}'
+      name: '{{name | default path.basename}}'
+      namespace: argocd
+      annotations:
+        # Platform uses its wave, services default to 0
+        argocd.argoproj.io/sync-wave: '{{wave | default "0"}}'
 
     spec:
       project: default
 
       source:
-        repoURL: https://github.com/YOUR_ORG/YOUR_REPO
+        repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
         targetRevision: HEAD
         path: '{{path}}'
 
-        helm:
-          valueFiles:
-            - ../../environments/dev/values.yaml
-
       destination:
         server: https://kubernetes.default.svc
-        namespace: default
+        namespace: '{{namespace | default "shopverse-dev"}}'
 
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
-          - CreateNamespace=true         # Creates namespace
-          - ApplyOutOfSyncOnly=true
-          - ServerSideApply=true
-          - PruneLast=true
+          - CreateNamespace=true
