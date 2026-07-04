@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user
+  name: nginx # user
   labels:
-    app: user
+    app: nginx # user
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: user
+      app: nginx # user
   template:
     metadata:
       labels:
-        app: user
+        app: nginx # user
       annotations:
         checksum/config: {{ include "user.config" . | sha256sum }}
     spec:
       containers:
         - name: user
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: nginx # "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 80
           envFrom:
