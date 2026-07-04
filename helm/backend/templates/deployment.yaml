@@ -26,7 +26,7 @@ spec:
           image: "{{ include "shopverse.backend.image" . }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}   # Always # IfNotPresent (default)
           ports:
-            - containerPort: 8080
+            - containerPort: {{ .Values.service.targetPort }} # 8080
               protocol: TCP
           envFrom:
             - configMapRef:
