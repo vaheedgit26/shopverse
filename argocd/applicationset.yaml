@@ -27,6 +27,12 @@ spec:
         directories:
           - path: apps/*
 
+    # - git:
+    # repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
+    # revision: HEAD
+    # files:
+    #  - path: apps/*/Chart.yaml
+
   # =========================================
   # 🎯 SINGLE TEMPLATE (USED BY BOTH)
   # =========================================
