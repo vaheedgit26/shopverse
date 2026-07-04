@@ -29,6 +29,11 @@ configmap:
 secret:
   name: shopverse-dev-mysql-jwt-credentials
 
+podSecurityContext:
+  fsGroup: 2000
+  runAsNonRoot: true
+  runAsUser: 1000
+
 resources:
   requests: 
     cpu: "100m"
