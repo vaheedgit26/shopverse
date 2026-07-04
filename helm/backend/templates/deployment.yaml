@@ -38,7 +38,7 @@ spec:
 
           {{- if .Values.probes.liveness.enabled }}
           livenessProbe:
-          {{ toYaml .Values.probes.liveness.config | nindent 6 }}
+          {{ toYaml .Values.probes.liveness.config | nindent 12 }}
           {{- end }}
             httpGet:
               path: /health
