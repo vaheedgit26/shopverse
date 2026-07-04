@@ -3,8 +3,10 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.configmap.name }}
   namespace: {{ .Values.namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+  #annotations:
+  #  argocd.argoproj.io/sync-wave: "-1"
+  labels:
+    reloader.stakater.com/match: "global-config"
 data:
   DB_HOST: {{ .Values.data.DB_HOST | quote }}
   DB_PORT: {{ .Values.data.DB_PORT | quote }}
