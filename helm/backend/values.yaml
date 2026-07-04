@@ -2,4 +2,4 @@ image:
   repository: nginx
   tag: latest
 
-replicaCount: 2
+replicaCount: 1
