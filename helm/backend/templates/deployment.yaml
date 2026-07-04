@@ -36,6 +36,11 @@ spec:
           ports:
             - containerPort: {{ .Values.service.targetPort }} # 8080
               protocol: TCP
+              
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 
           {{- if or .Values.configmap.name .Values.secret.name }}
           envFrom:
