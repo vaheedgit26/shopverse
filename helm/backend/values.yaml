@@ -7,11 +7,8 @@ labels: {}
 imagePullPolicy: IfNotPresent
 terminationGracePeriodSeconds: 30
 
-configmap:
-  name: ""
-  
-secret:
-  name: ""
+configmaps: {}
+secrets: {}
   
 imagePullSecrets: []
 podAnnotations: {}
