@@ -25,11 +25,11 @@ service:
   port: 8080
   targetPort: 8080
 
-configmap:
-  name: frontend-config
+#configmap:
+#  name: frontend-config
 
-secret:
-  name: shopverse-dev-mysql-jwt-credentials
+#secret:
+#  name: shopverse-dev-mysql-jwt-credentials
 
 podSecurityContext:
   fsGroup: 2000
