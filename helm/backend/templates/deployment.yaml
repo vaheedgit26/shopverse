@@ -35,8 +35,11 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-         
+
+          {{- if .Values.probes.liveness.enabled }}
           livenessProbe:
+          {{ toYaml .Values.probes.liveness.config | nindent 6 }}
+          {{- end }}
             httpGet:
               path: /health
               port: 8080
