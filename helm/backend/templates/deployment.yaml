@@ -22,7 +22,7 @@ spec:
       {{- end }}
       annotations:
         checksum/backend-config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}   # ✅ LOCAL CONFIG → checksum
-        reloader.stakater.com/auto: "true"  # ✅ GLOBAL CONFIG → reloader
+        reloader.stakater.com/match: "global-config"  # ✅ GLOBAL CONFIG → reloader
     spec:
       # imagePullSecrets:
       # serviceAccountName: {{ include "pharma-service.serviceAccountName" . }}
