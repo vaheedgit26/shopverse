@@ -27,7 +27,7 @@ service:
   targetPort: 8080
 
 configmap:
-  name: backend-config
+  name: global-backend-config
 
 secret:
   name: shopverse-dev-mysql-jwt-credentials
