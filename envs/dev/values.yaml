@@ -1,6 +1,6 @@
 global:
   db:
-    host: HOST-1   # mydb-dev.abc123.rds.amazonaws.com
+    host: DB-HOST-1   # mydb-dev.abc123.rds.amazonaws.com
     port: "5432"
 
   app:
