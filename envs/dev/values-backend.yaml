@@ -7,6 +7,13 @@ image:
   name: shopverse-backend
   version: v1
 
+imagePullPolicy: Always
+
+labels: 
+  app: shopverse
+  component: backend
+  env: dev
+
 deployment:
   name: backend-deploy
   replicas: 1
