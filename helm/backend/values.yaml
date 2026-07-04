@@ -3,7 +3,7 @@ deployment: {}
 service: {}
 resources: {}
 probes:
-  liveness: {}
-  readiness: {}
-  startup: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  startupProbe: {}
 
