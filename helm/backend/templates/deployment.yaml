@@ -23,11 +23,11 @@ spec:
     spec:
       # imagePullSecrets:
       # serviceAccountName: {{ include "pharma-service.serviceAccountName" . }}
-      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
         - name: backend
           image: "{{ include "shopverse.backend.image" . }}"
