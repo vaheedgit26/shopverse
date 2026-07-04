@@ -3,25 +3,28 @@ kind: Deployment
 metadata:
   name: {{ .Values.deployment.name }}
   namespace: {{ .Values.namespace }}
+  {{- with .Values.labels }}
   labels:
-    app: shopverse
-    component: backend
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.deployment.replicas }}
   selector:
+    {{- with .Values.labels }}
     matchLabels:
-      app: shopverse
-      component: backend
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
   template:
     metadata:
+      {{- with .Values.labels }}
       labels:
-        app: shopverse
-        component: backend
+        {{- toYaml . | nindent 4 }}
+      {{- end }}
     spec:
       containers:
         - name: backend
           image: "{{ include "shopverse.backend.image" . }}"
-          imagePullPolicy: Always        # IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy }}   # Always # IfNotPresent (default)
           ports:
             - containerPort: 8080
               protocol: TCP
