@@ -1,6 +1,17 @@
+namespace: default
 image: {}
 deployment: {}
 service: {}
+labels: {}
+
+imagePullPolicy: IfNotPresent
+
+configmap:
+  name: ""
+  
+secret:
+  name: ""
+
 resources: {}
 probes:
   livenessProbe: {}
