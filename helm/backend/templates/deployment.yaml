@@ -29,7 +29,7 @@ spec:
       {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
-        - name: backend
+        - name: {{ .Values.containerName }}  # backend
           image: "{{ include "shopverse.backend.image" . }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}   # Always # IfNotPresent (default)
           ports:
