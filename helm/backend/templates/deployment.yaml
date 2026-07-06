@@ -54,9 +54,9 @@ spec:
       {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
-        - name: {{ .Values.containerName }}  # backend
+        - name: {{ .Values.containerName | default "backend" }}  # backend
           image: "{{ include "shopverse.backend.image" . }}"
-          imagePullPolicy: {{ .Values.imagePullPolicy }}   # Always # IfNotPresent (default)
+          imagePullPolicy: {{ .Values.imagePullPolicy | default "IfNotPresent" }}   # Always # IfNotPresent 
           ports:
             - containerPort: {{ .Values.service.targetPort }} # 8080
               protocol: TCP
