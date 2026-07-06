@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+
+metadata:
+  name: shopverse-applicationset
+  namespace: argocd
+
+spec:
+  generators:
+
+    - matrix:
+        generators:
+
+          # 🌍 COMMON VALUES
+          - list:
+              elements:
+                - project: shopverse
+                  env: dev
+                  repoURL: https://github.com/vaheedgit26/shopverse.git
+
+          # 📦 PLATFORM + SERVICES COMBINED
+          - merge:
+              generators:
+
+                # PLATFORM
+                - list:
+                    elements:
+                      - name: platform
+                        appPath: platform/global-config
+                        wave: "-1"
+
+                # SERVICES (AUTO DISCOVERY)
+                - git:
+                    repoURL: https://github.com/vaheedgit26/shopverse.git
+                    revision: HEAD
+                    files:
+                      - path: apps/*/Chart.yaml
+                    template:
+                      values:
+                        name: '{{path.dirname | base}}'
+                        appPath: '{{path.dirname}}'
+                        wave: "0"
+
+  template:
+    metadata:
+      name: '{{name}}'
+      namespace: argocd
+      annotations:
+        argocd.argoproj.io/sync-wave: '{{wave}}'
+
+    spec:
+      project: '{{project}}-{{env}}'
+
+      source:
+        repoURL: '{{repoURL}}'
+        targetRevision: HEAD
+        path: '{{appPath}}'
+        helm:
+          releaseName: '{{project}}-{{env}}-{{name}}'
+          valueFiles:
+            - values.yaml
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{project}}-{{env}}'
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
+          - PruneLast=true
