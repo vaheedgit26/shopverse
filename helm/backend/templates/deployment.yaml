@@ -35,14 +35,13 @@ spec:
         {{- end }}
         {{- end }}
 
-        # GLOBAL CONFIG reloader (only if exists)
-        {{- with .Values.configmaps.envFrom.global }}
-        reloader.stakater.com/match: "{{ join "," . }}"
-        {{- end }}
+        {{- $gcm := .Values.configmaps.envFrom.global | default list }}
+        {{- $gsec := .Values.secrets.envFrom.global | default list }}
+        {{- $all := concat $gcm $gsec }}
 
-        # GLOBAL SECRET reloader (only if exists)
+        # GLOBAL CONFIGMAP and SECRET reloader (only if exists)
         {{- with .Values.secrets.envFrom.global }}
-        reloader.stakater.com/match: "{{ join "," . }}"
+        reloader.stakater.com/match: "{{ join "," $all }}"
         {{- end }}
         
     spec:
