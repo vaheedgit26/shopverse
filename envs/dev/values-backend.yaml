@@ -27,18 +27,16 @@ service:
   targetPort: 8080
 
 configmaps:
-  envFrom:
-    local:
-      - backend-config
-    global:
-      - global-config
+  local:
+    - backend-configmap
+  global:
+    - global-configmap
       
 secrets:
-  envFrom:
-    local:
-      - backend-secret
-    global:
-      - global-secret
+  local:
+    - backend-secret
+  global:
+    - global-secret
 
 podSecurityContext:
   fsGroup: 2000
