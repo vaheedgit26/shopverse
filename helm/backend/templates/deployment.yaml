@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.deployment.name }}   # {{ .Release.Name }}
-  namespace: {{ .Values.namespace }}
+  # namespace: {{ .Values.namespace }}
   {{- with .Values.labels }}
   labels:
   {{- toYaml . | nindent 4 }}
