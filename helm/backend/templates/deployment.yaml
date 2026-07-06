@@ -21,6 +21,11 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
 
+      {{- /* DEFINE VARIABLES FIRST */}}
+      {{- $gcm := .Values.configmaps.global | default list }}
+      {{- $gsec := .Values.secrets.global | default list }}
+      {{- $all := concat $gcm $gsec }}
+
       {{- $hasLocalCM := gt (len (.Values.configmaps.local | default list)) 0 }}
       {{- $hasLocalSec := gt (len (.Values.secrets.local | default list)) 0 }}
       {{- $hasGlobal := gt (len $all) 0 }}
@@ -37,10 +42,6 @@ spec:
         checksum/{{ . }}: {{ include (print $.Template.BasePath "/" . ".yaml") $ | sha256sum }}
         {{- end }}
      
-        {{- $gcm := .Values.configmaps.global | default list }}
-        {{- $gsec := .Values.secrets.global | default list }}
-        {{- $all := concat $gcm $gsec }}
-
         # GLOBAL CONFIGMAP and SECRET reloader (only if exists)
         {{- if $all }}
         reloader.stakater.com/match: "{{ join "," $all }}"
