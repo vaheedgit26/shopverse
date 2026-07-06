@@ -70,7 +70,6 @@ spec:
             # CONFIGMAPS
             # =========================
             # LOCAL CONFIGMAPS
-            # {{- with .Values.configmaps.envFrom.local }}
             {{- range (.Values.configmaps.local | default list) }}
             - configMapRef:
                 name: {{ . }}
