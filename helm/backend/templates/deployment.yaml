@@ -71,13 +71,11 @@ spec:
             # =========================
             # LOCAL CONFIGMAPS
             # {{- with .Values.configmaps.envFrom.local }}
-            {{- with .Values.configmaps.envFrom.local | default list }}
-            {{- range . }}
+            {{- range (.Values.configmaps.envFrom.local | default list) }}
             - configMapRef:
                 name: {{ . }}
             {{- end }}
-            {{- end }}
-
+            
             # GLOBAL CONFIGMAPS
             {{- range (.Values.configmaps.envFrom.global | default list) }}
             - configMapRef:
