@@ -22,21 +22,17 @@ spec:
       {{- end }}
       annotations:
         # LOCAL CONFIG checksum (only if exists)
-        {{- with .Values.configmaps.envFrom.local }}
-        {{- range . }}
-        checksum/config-{{ . }}: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
-        {{- end }}
+        {{- range (.Values.configmaps.local | default list) }}
+        checksum/{{ . }}: {{ include (print $.Template.BasePath "/" . ".yaml") $ | sha256sum }}
         {{- end }}
 
         # LOCAL SECRET checksum (only if exists)
-        {{- with .Values.secrets.envFrom.local }}
-        {{- range . }}
-        checksum/secret-{{ . }}: {{ include (print $.Template.BasePath "/secret.yaml") $ | sha256sum }}
+        {{- range (.Values.secrets.local | default list) }}
+        checksum/{{ . }}: {{ include (print $.Template.BasePath "/" . ".yaml") $ | sha256sum }}
         {{- end }}
-        {{- end }}
-
-        {{- $gcm := .Values.configmaps.envFrom.global | default list }}
-        {{- $gsec := .Values.secrets.envFrom.global | default list }}
+     
+        {{- $gcm := .Values.configmaps.global | default list }}
+        {{- $gsec := .Values.secrets.global | default list }}
         {{- $all := concat $gcm $gsec }}
 
         # GLOBAL CONFIGMAP and SECRET reloader (only if exists)
