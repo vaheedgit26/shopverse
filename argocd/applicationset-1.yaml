@@ -18,14 +18,14 @@ spec:
             project: shopverse
             env: dev
             repoURL: https://github.com/vaheedgit26/shopverse.git
-			
-	#***************************************************************************************#
-	
+
+    # *************************************************************************************** #
+
     - matrix:
         generators:
 
           # ===========================================================
-          # 🌍 COMMON SHARED VALUES (ONLY ONCE) git-file generator
+          # 🌍 COMMON SHARED VALUES
           # ===========================================================
           - list:
               elements:
@@ -54,14 +54,14 @@ spec:
     metadata:
       name: '{{name}}'
       namespace: argocd
-	  
-      labels:
-        env: "{{env}}"
-        project: "{{project}}"
-        component: "{{name}}"
-        app.kubernetes.io/part-of: "{{project}}"
 
-	  annotations:
+      labels:
+        env: '{{env}}'
+        project: '{{project}}'
+        component: '{{name}}'
+        app.kubernetes.io/part-of: '{{project}}'
+
+      annotations:
         argocd.argoproj.io/sync-wave: '{{wave}}'
 
     spec:
@@ -73,8 +73,8 @@ spec:
         path: '{{appPath}}'
         helm:
           releaseName: '{{project}}-{{env}}-{{name}}'
-		  valueFiles:
-		    - values.yaml
+          valueFiles:
+            - values.yaml
 
       destination:
         server: https://kubernetes.default.svc
@@ -82,10 +82,10 @@ spec:
 
       syncPolicy:
         automated:
-          prune: true                # delete resources not in Git
-          selfHeal: true             # revert out-of-band changes
+          prune: true
+          selfHeal: true
         syncOptions:
           - CreateNamespace=true
-		  - ApplyOutOfSyncOnly=true
+          - ApplyOutOfSyncOnly=true
           - ServerSideApply=true
           - PruneLast=true
