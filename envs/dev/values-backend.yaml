@@ -28,15 +28,15 @@ service:
 
 configmaps:
   local:
-    - configmap-backend
+    - configmap-backend   # file must be "configmap-backend.yaml"
   global:
-    - configmap-global
+    - configmap-global    # file name must be "configmap-global"
       
 secrets:
   local:
-    - backend-secret
+    - secret-backend      # file must be "secret-backend.yaml"
   global:
-    - global-secret
+    - secret-global       # file must be "secret-global.yaml"
 
 podSecurityContext:
   fsGroup: 2000
