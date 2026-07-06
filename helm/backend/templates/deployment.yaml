@@ -79,33 +79,26 @@ spec:
             {{- end }}
 
             # GLOBAL CONFIGMAPS
-            {{- with .Values.configmaps.envFrom.global | default list }}
-            {{- range . }}
+            {{- range (.Values.configmaps.envFrom.global | default list) }}
             - configMapRef:
                 name: {{ . }}
             {{- end }}
-            {{- end }}
-
+            
             # =========================
             # SECRETS
             # =========================
             # LOCAL SECRETS
-            # {{- with .Values.secrets.envFrom.local }}
-            {{- with .Values.secrets.envFrom.local | default list }}
-            {{- range . }}
+            {{- range (.Values.secrets.envFrom.local | default list) }}
             - secretRef:
                 name: {{ . }}
             {{- end }}
-            {{- end }}
-
+            
             # GLOBAL SECRETS
-            {{- with .Values.secrets.envFrom.global | default list }}
-            {{- range . }}
+            {{- range (.Values.secrets.envFrom.global | default list) }}
             - secretRef:
                 name: {{ . }}
             {{- end }}
-            {{- end }}
-                
+                            
           {{- with .Values.resources }}      
           resources:
           {{- toYaml . | nindent 12 }}
