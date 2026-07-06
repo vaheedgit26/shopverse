@@ -24,10 +24,10 @@ spec:
     # Scans files, not directories
     # Only picks folders that contain Chart.yaml
     - git:
-      repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
-      revision: HEAD
-      files:
-        - path: apps/*/Chart.yaml
+        repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
+        revision: HEAD
+        files:
+          - path: apps/*/Chart.yaml
 
     # {{path}}          → apps/backend/Chart.yaml
     # {{path.dirname}}  → apps/backend   ✅ IMPORTANT
