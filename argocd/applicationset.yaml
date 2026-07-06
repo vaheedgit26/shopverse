@@ -7,64 +7,78 @@ metadata:
 
 spec:
   generators:
-
     # =========================================
-    # 🌍 PLATFORM (STATIC - FIRST)
+    # 🌍 PLATFORM (STATIC - STILL SEPARATE)
     # =========================================
     - list:
         elements:
           - name: platform
-            path: platform/global-config
-            namespace: shopverse-dev
+            appPath: platform/global-config
             wave: "-1"
+            project: shopverse
+            env: dev
+            repoURL: https://github.com/vaheedgit26/shopverse.git
+			
+	#**************************************************************************#
+	
+    - matrix:
+        generators:
 
-    # =========================================
-    # 🚀 SERVICES (AUTO DISCOVERY)
-    # =========================================
-    # Scans files, not directories
-    # Only picks folders that contain Chart.yaml
-    - git:
-        repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
-        revision: HEAD
-        files:
-          - path: apps/*/Chart.yaml
+          # =========================================
+          # 🌍 COMMON SHARED VALUES (ONLY ONCE)
+          # =========================================
+          - list:
+              elements:
+                - project: shopverse
+                  env: dev
+                  repoURL: https://github.com/vaheedgit26/shopverse.git
 
-    # {{path}}          → apps/backend/Chart.yaml
-    # {{path.dirname}}  → apps/backend   ✅ IMPORTANT
-    # {{path.basename}} → Chart.yaml
-
-    # - git:
-    #     repoURL: https://github.com/vaheedgit26/vg-travelbooking.git
-    #     revision: HEAD
-    #     directories:
-    #       - path: apps/*
+          # =========================================
+          # 🚀 SERVICES (AUTO DISCOVERY)
+          # =========================================
+          - git:
+              repoURL: https://github.com/vaheedgit26/shopverse.git
+              revision: HEAD
+              files:
+                - path: apps/*/Chart.yaml
+              template:
+                values:
+                  name: '{{path.dirname | base}}'
+                  appPath: '{{path.dirname}}'
+                  wave: "0"
 
   # =========================================
-  # 🎯 SINGLE TEMPLATE (USED BY BOTH)
+  # 🎯 COMMON TEMPLATE (NO HARDCODING)
   # =========================================
   template:
     metadata:
-      name: "{{name | default path.dirname}}"     # '{{name | default path.basename}}'
+      name: '{{name}}'
       namespace: argocd
       annotations:
-        # Platform uses its wave, services default to 0
-        argocd.argoproj.io/sync-wave: '{{wave | default "0"}}'
+        argocd.argoproj.io/sync-wave: '{{wave}}'
 
     spec:
-      project: default
+      project: '{{project}}-{{env}}'
 
       source:
-        repoURL: https://github.com/vaheedgit26/shopverse.git
+        repoURL: '{{repoURL}}'
         targetRevision: HEAD
-        path: '{{path}}'
+        path: '{{appPath}}'
+        helm:
+          releaseName: '{{project}}-{{env}}-{{name}}'
+		  valueFiles:
+		    - values.yaml
 
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{namespace | default "shopverse-dev"}}'
+        namespace: '{{project}}-{{env}}'
 
       syncPolicy:
         automated:
-          prune: true
-          selfHeal: true
+          prune: true                # delete resources not in Git
+          selfHeal: true             # revert out-of-band changes
         syncOptions:
           - CreateNamespace=true
+		  - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
+          - PruneLast=true
