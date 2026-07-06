@@ -31,7 +31,7 @@ spec:
                         appPath: platform/global-config
                         wave: "-1"
 
-                # SERVICES (AUTO DISCOVERY)
+                # SERVICES (AUTO DISCOVERY) git-file generator
                 - git:
                     repoURL: https://github.com/vaheedgit26/shopverse.git
                     revision: HEAD
