@@ -28,9 +28,9 @@ service:
 
 configmaps:
   local:
-    - backend-configmap
+    - configmap-backend
   global:
-    - global-configmap
+    - configmap-global
       
 secrets:
   local:
