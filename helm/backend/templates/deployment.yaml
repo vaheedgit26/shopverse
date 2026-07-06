@@ -100,7 +100,7 @@ spec:
             {{- end }}
 
             # GLOBAL SECRETS
-            {{- with .Values.secrets.envFrom.global } default list }}
+            {{- with .Values.secrets.envFrom.global | default list }}
             {{- range . }}
             - secretRef:
                 name: {{ . }}
