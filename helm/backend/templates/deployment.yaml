@@ -71,13 +71,13 @@ spec:
             # =========================
             # LOCAL CONFIGMAPS
             # {{- with .Values.configmaps.envFrom.local }}
-            {{- range (.Values.configmaps.envFrom.local | default list) }}
+            {{- range (.Values.configmaps.local | default list) }}
             - configMapRef:
                 name: {{ . }}
             {{- end }}
             
             # GLOBAL CONFIGMAPS
-            {{- range (.Values.configmaps.envFrom.global | default list) }}
+            {{- range (.Values.configmaps.global | default list) }}
             - configMapRef:
                 name: {{ . }}
             {{- end }}
@@ -86,13 +86,13 @@ spec:
             # SECRETS
             # =========================
             # LOCAL SECRETS
-            {{- range (.Values.secrets.envFrom.local | default list) }}
+            {{- range (.Values.secrets.local | default list) }}
             - secretRef:
                 name: {{ . }}
             {{- end }}
             
             # GLOBAL SECRETS
-            {{- range (.Values.secrets.envFrom.global | default list) }}
+            {{- range (.Values.secrets.global | default list) }}
             - secretRef:
                 name: {{ . }}
             {{- end }}
