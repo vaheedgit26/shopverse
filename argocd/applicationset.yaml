@@ -24,18 +24,18 @@ spec:
     - matrix:
         generators:
 
-          # =========================================
-          # 🌍 COMMON SHARED VALUES (ONLY ONCE)
-          # =========================================
+          # ===========================================================
+          # 🌍 COMMON SHARED VALUES (ONLY ONCE) git-file generator
+          # ===========================================================
           - list:
               elements:
                 - project: shopverse
                   env: dev
                   repoURL: https://github.com/vaheedgit26/shopverse.git
 
-          # =========================================
+          # ===========================================================
           # 🚀 SERVICES (AUTO DISCOVERY)
-          # =========================================
+          # ===========================================================
           - git:
               repoURL: https://github.com/vaheedgit26/shopverse.git
               revision: HEAD
