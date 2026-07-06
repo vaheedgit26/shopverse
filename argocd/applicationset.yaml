@@ -54,7 +54,14 @@ spec:
     metadata:
       name: '{{name}}'
       namespace: argocd
-      annotations:
+	  
+      labels:
+        env: "{{env}}"
+        project: "{{project}}"
+        component: "{{name}}"
+        app.kubernetes.io/part-of: "{{project}}"
+
+	  annotations:
         argocd.argoproj.io/sync-wave: '{{wave}}'
 
     spec:
