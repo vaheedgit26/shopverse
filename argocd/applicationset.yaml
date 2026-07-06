@@ -42,7 +42,7 @@ spec:
                         name: '{{path.dirname | base}}'
                         appPath: '{{path.dirname}}'
                         wave: "0"
-
+  # Application Template
   template:
     metadata:
       name: '{{name}}'
