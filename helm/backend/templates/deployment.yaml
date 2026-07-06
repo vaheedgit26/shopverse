@@ -5,20 +5,20 @@ metadata:
   namespace: {{ .Values.namespace }}
   {{- with .Values.labels }}
   labels:
-    {{- toYaml . | nindent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   replicas: {{ .Values.deployment.replicas }}
   selector:
     {{- with .Values.labels }}
     matchLabels:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 6 }}
     {{- end }}
   template:
     metadata:
       {{- with .Values.labels }}
       labels:
-        {{- toYaml . | nindent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       annotations:
         # ✅ LOCAL CONFIG checksum (only if exists)
@@ -63,7 +63,7 @@ spec:
               
           {{- with .Values.containerSecurityContext }}
           securityContext:
-            {{- toYaml . | nindent 12 }}
+          {{- toYaml . | nindent 12 }}
           {{- end }}
 
           envFrom:
@@ -109,20 +109,20 @@ spec:
                 
           {{- with .Values.resources }}      
           resources:
-            {{- toYaml . | nindent 12 }}
+          {{- toYaml . | nindent 12 }}
           {{- end }}
 
           {{- with .Values.probes.startupProbe }}
           startupProbe:
-            {{- toYaml . | nindent 12 }}
+          {{- toYaml . | nindent 12 }}
           {{- end }}
 
           {{- with .Values.probes.readinessProbe }}
           readinessProbe:
-            {{- toYaml . | nindent 12 }}
+          {{- toYaml . | nindent 12 }}
           {{- end }}
 
           {{- with .Values.probes.livenessProbe }}
           livenessProbe:
-            {{- toYaml . | nindent 12 }}
+          {{- toYaml . | nindent 12 }}
           {{- end }}
