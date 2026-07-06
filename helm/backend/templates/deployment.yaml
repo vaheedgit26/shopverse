@@ -80,7 +80,7 @@ spec:
             {{- end }}
 
             # GLOBAL CONFIGMAPS
-            {{- with .Values.configmaps.envFrom.local | default list }}
+            {{- with .Values.configmaps.envFrom.global | default list }}
             {{- range . }}
             - configMapRef:
                 name: {{ . }}
