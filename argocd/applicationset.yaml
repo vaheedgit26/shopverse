@@ -65,7 +65,7 @@ spec:
         helm:
           releaseName: '{{project}}-{{env}}-{{name}}'
           valueFiles:
-            - values.yaml
+            - 'values-{{name}}.yaml'
 
       destination:
         server: https://kubernetes.default.svc
