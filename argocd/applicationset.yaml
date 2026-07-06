@@ -10,15 +10,17 @@ spec:
 
     - matrix:
         generators:
-
+          #============================================================
           # 🌍 COMMON VALUES
+          #============================================================
           - list:
               elements:
                 - project: shopverse
                   env: dev
                   repoURL: https://github.com/vaheedgit26/shopverse.git
-
+          #============================================================
           # 📦 PLATFORM + SERVICES COMBINED
+          #============================================================
           - merge:
               generators:
 
