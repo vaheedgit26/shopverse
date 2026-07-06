@@ -80,3 +80,16 @@ spec:
           - ApplyOutOfSyncOnly=true
           - ServerSideApply=true
           - PruneLast=true
+#========================================================================#
+# 1. Validate YAML
+# kubectl apply --dry-run=client -f applicationset.yaml
+
+# 2. Preview changes
+# kubectl diff -f applicationset.yaml
+
+# 3. Apply in sandbox
+# kubectl apply -f applicationset.yaml
+
+# 4. Inspect output
+# kubectl get applications -n argocd -o yaml
+#========================================================================#
