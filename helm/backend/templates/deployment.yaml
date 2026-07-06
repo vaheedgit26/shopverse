@@ -21,26 +21,26 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       annotations:
-        # ✅ LOCAL CONFIG checksum (only if exists)
+        # LOCAL CONFIG checksum (only if exists)
         {{- with .Values.configmaps.envFrom.local }}
         {{- range . }}
         checksum/config-{{ . }}: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
         {{- end }}
         {{- end }}
 
-        # ✅ LOCAL SECRET checksum (only if exists)
+        # LOCAL SECRET checksum (only if exists)
         {{- with .Values.secrets.envFrom.local }}
         {{- range . }}
         checksum/secret-{{ . }}: {{ include (print $.Template.BasePath "/secret.yaml") $ | sha256sum }}
         {{- end }}
         {{- end }}
 
-        # ✅ GLOBAL CONFIG reloader (only if exists)
+        # GLOBAL CONFIG reloader (only if exists)
         {{- with .Values.configmaps.envFrom.global }}
         reloader.stakater.com/match: "{{ join "," . }}"
         {{- end }}
 
-        # ✅ GLOBAL SECRET reloader (only if exists)
+        # GLOBAL SECRET reloader (only if exists)
         {{- with .Values.secrets.envFrom.global }}
         reloader.stakater.com/match: "{{ join "," . }}"
         {{- end }}
@@ -70,7 +70,7 @@ spec:
             # =========================
             # CONFIGMAPS
             # =========================
-            # ✅ LOCAL CONFIGMAPS
+            # LOCAL CONFIGMAPS
             # {{- with .Values.configmaps.envFrom.local }}
             {{- with .Values.configmaps.envFrom.local | default list }}
             {{- range . }}
@@ -79,7 +79,7 @@ spec:
             {{- end }}
             {{- end }}
 
-            # ✅ GLOBAL CONFIGMAPS
+            # GLOBAL CONFIGMAPS
             {{- with .Values.configmaps.envFrom.local | default list }}
             {{- range . }}
             - configMapRef:
@@ -90,7 +90,7 @@ spec:
             # =========================
             # SECRETS
             # =========================
-            # ✅ LOCAL SECRETS
+            # LOCAL SECRETS
             # {{- with .Values.secrets.envFrom.local }}
             {{- with .Values.secrets.envFrom.local | default list }}
             {{- range . }}
@@ -99,7 +99,7 @@ spec:
             {{- end }}
             {{- end }}
 
-            # ✅ GLOBAL SECRETS
+            # GLOBAL SECRETS
             {{- with .Values.secrets.envFrom.global } default list }}
             {{- range . }}
             - secretRef:
