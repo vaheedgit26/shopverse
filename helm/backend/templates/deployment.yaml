@@ -43,7 +43,7 @@ spec:
         {{- end }}
      
         # GLOBAL CONFIGMAP and SECRET reloader (only if exists)
-        {{- if $all }}
+        {{- if gt (len $all) 0 }}
         reloader.stakater.com/match: "{{ join "," $all }}"
         {{- end }} 
       {{- end }}
