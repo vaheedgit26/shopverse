@@ -20,6 +20,12 @@ spec:
       labels:
       {{- toYaml . | nindent 8 }}
       {{- end }}
+
+      {{- $hasLocalCM := gt (len (.Values.configmaps.local | default list)) 0 }}
+      {{- $hasLocalSec := gt (len (.Values.secrets.local | default list)) 0 }}
+      {{- $hasGlobal := gt (len $all) 0 }}
+
+      {{- if or $hasLocalCM $hasLocalSec $hasGlobal }}
       annotations:
         # LOCAL CONFIG checksum (only if exists)
         {{- range (.Values.configmaps.local | default list) }}
@@ -38,7 +44,8 @@ spec:
         # GLOBAL CONFIGMAP and SECRET reloader (only if exists)
         {{- if $all }}
         reloader.stakater.com/match: "{{ join "," $all }}"
-        {{- end }}
+        {{- end }} 
+      {{- end }}
         
     spec:
       # imagePullSecrets:
@@ -61,6 +68,13 @@ spec:
           {{- toYaml . | nindent 12 }}
           {{- end }}
 
+          {{- $hasEnv := or
+              (gt (len (.Values.configmaps.local | default list)) 0)
+              (gt (len (.Values.configmaps.global | default list)) 0)
+              (gt (len (.Values.secrets.local | default list)) 0)
+              (gt (len (.Values.secrets.global | default list)) 0)
+          }}
+          {{- if $hasEnv }}
           envFrom:
             # =========================
             # CONFIGMAPS
@@ -91,7 +105,8 @@ spec:
             - secretRef:
                 name: {{ . }}
             {{- end }}
-                            
+          {{- end }}
+          
           {{- with .Values.resources }}      
           resources:
           {{- toYaml . | nindent 12 }}
