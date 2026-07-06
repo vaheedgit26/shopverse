@@ -40,7 +40,7 @@ spec:
         {{- $all := concat $gcm $gsec }}
 
         # GLOBAL CONFIGMAP and SECRET reloader (only if exists)
-        {{- with .Values.secrets.envFrom.global }}
+        {{- if $all }}
         reloader.stakater.com/match: "{{ join "," $all }}"
         {{- end }}
         
