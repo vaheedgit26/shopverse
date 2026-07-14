@@ -75,6 +75,7 @@ spec:
               (gt (len (.Values.secrets.local | default list)) 0)
               (gt (len (.Values.secrets.global | default list)) 0)
           }}
+          
           {{- if $hasEnv }}
           envFrom:
             # =========================
