@@ -1,10 +1,15 @@
+{{- if .Values.configmap }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Values.configmap.name }}                         # shopverse-config
-  namespace: {{ .Values.namespace }}                         # shopverse-dev
+  # namespace: {{ .Values.namespace }}                       # shopverse-dev
+  {{- with .Values.labels }}
   labels:
-    app: shopverse
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 data:
-  DB_NAME: {{ .Values.mysql.DB_DATABASE | quote }}              # "shopverse"
-  FRONTEND_ORIGIN: "*"                                       # "http://frontend-svc:8080"
+  {{- range $key, $value := .Values.configmap.data }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
