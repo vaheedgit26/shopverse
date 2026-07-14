@@ -1,0 +1,22 @@
+namespace: default
+image: {}
+deployment: {}
+service: {}
+labels: {}
+
+imagePullPolicy: IfNotPresent
+terminationGracePeriodSeconds: 30
+
+configmaps: {}
+secrets: {}
+  
+imagePullSecrets: []
+podAnnotations: {}
+podSecurityContext: {}
+containerSecurityContext: {}
+
+resources: {}
+probes:
+  livenessProbe: {}
+  readinessProbe: {}
+  startupProbe: {}
