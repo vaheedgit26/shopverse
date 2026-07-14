@@ -7,6 +7,6 @@ metadata:
     {{- include "shopverse.labels" . | nindent 4 }}
 data:
   {{- range $key, $value := .Values.configmap }}
-  {{ $key }}: {{ $value | quote }}
+  {{ $key }}: {{ $value | toString | quote }}
   {{- end }}
 {{- end }}
