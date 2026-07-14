@@ -74,3 +74,10 @@ probes:
     port: 8080
     initialDelaySeconds: 10
     periodSeconds: 10
+    
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
