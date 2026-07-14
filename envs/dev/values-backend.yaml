@@ -80,7 +80,7 @@ volumes:
     emptyDir: {}
     
 serviceAccount:
-  create: false
+  create: true
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::873135413040:role/pharma-dev-eks-role
   name: backend
