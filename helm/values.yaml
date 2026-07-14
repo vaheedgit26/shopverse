@@ -16,7 +16,10 @@ podSecurityContext: {}
 containerSecurityContext: {}
 
 resources: {}
+
 probes:
   livenessProbe: {}
   readinessProbe: {}
   startupProbe: {}
+
+autoscaling: {}
