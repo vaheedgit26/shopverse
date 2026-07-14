@@ -1,0 +1,129 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}   # {{ .Release.Name }}
+  # namespace: {{ .Values.namespace }}
+  {{- with .Values.labels }}
+  labels:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    {{- with .Values.labels }}
+    matchLabels:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+  template:
+    metadata:
+      {{- with .Values.labels }}
+      labels:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- /* DEFINE VARIABLES FIRST */}}
+      {{- $gcm := .Values.configmaps.global | default list }}
+      {{- $gsec := .Values.secrets.global | default list }}
+      {{- $all := concat $gcm $gsec }}
+
+      {{- $hasLocalCM := gt (len (.Values.configmaps.local | default list)) 0 }}
+      {{- $hasLocalSec := gt (len (.Values.secrets.local | default list)) 0 }}
+      {{- $hasGlobal := gt (len $all) 0 }}
+
+      {{- if or $hasLocalCM $hasLocalSec $hasGlobal }}
+      annotations:
+        # LOCAL CONFIG checksum (only if exists)
+        {{- range (.Values.configmaps.local | default list) }}
+        checksum/{{ . }}: {{ include (print $.Template.BasePath "/" . ".yaml") $ | sha256sum }}
+        {{- end }}
+
+        # LOCAL SECRET checksum (only if exists)
+        {{- range (.Values.secrets.local | default list) }}
+        checksum/{{ . }}: {{ include (print $.Template.BasePath "/" . ".yaml") $ | sha256sum }}
+        {{- end }}
+     
+        # GLOBAL CONFIGMAP and SECRET reloader (only if exists)
+        {{- if gt (len $all) 0 }}
+        reloader.stakater.com/match: "{{ join "," $all }}"
+        {{- end }} 
+      {{- end }}
+        
+    spec:
+      # imagePullSecrets:
+      # serviceAccountName: {{ include "pharma-service.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      containers:
+        - name: {{ .Values.containerName | default "backend" }}  # backend
+          image: "{{ include "shopverse.backend.image" . }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy | default "IfNotPresent" }}   # Always # IfNotPresent 
+          ports:
+            - containerPort: {{ .Values.service.targetPort }} # 8080
+              protocol: TCP
+              
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+          {{- $hasEnv := or
+              (gt (len (.Values.configmaps.local | default list)) 0)
+              (gt (len (.Values.configmaps.global | default list)) 0)
+              (gt (len (.Values.secrets.local | default list)) 0)
+              (gt (len (.Values.secrets.global | default list)) 0)
+          }}
+          {{- if $hasEnv }}
+          envFrom:
+            # =========================
+            # CONFIGMAPS
+            # =========================
+            # LOCAL CONFIGMAPS
+            {{- range (.Values.configmaps.local | default list) }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
+            
+            # GLOBAL CONFIGMAPS
+            {{- range (.Values.configmaps.global | default list) }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
+            
+            # =========================
+            # SECRETS
+            # =========================
+            # LOCAL SECRETS
+            {{- range (.Values.secrets.local | default list) }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
+            
+            # GLOBAL SECRETS
+            {{- range (.Values.secrets.global | default list) }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
+          {{- end }}
+          
+          {{- with .Values.resources }}      
+          resources:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+          {{- with .Values.probes.startupProbe }}
+          startupProbe:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+          {{- with .Values.probes.readinessProbe }}
+          readinessProbe:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+          {{- with .Values.probes.livenessProbe }}
+          livenessProbe:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
