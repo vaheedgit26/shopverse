@@ -26,6 +26,14 @@ service:
   port: 8080
   targetPort: 8080
 
+configmap:
+  name: configmap-backend
+  data:
+    DB_HOST: ""
+    DB_PORT: "3306"
+    DB_NAME: "shopverse"
+    FRONTEND_ORIGIN: "*"
+
 configmaps:
   local:
     - configmap-backend   # file must be "configmap-backend.yaml"
