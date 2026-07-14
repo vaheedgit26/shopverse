@@ -28,7 +28,7 @@ If release name contains chart name it will be used as a full name.
 
 {{/* Common labels */}}
 {{- define "shopverse.labels" -}}
-helm.sh/chart: {{ include "pharma-service.chart" . }}
+helm.sh/chart: {{ include "shopverse.chart" . }}
 {{ include "shopverse.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
