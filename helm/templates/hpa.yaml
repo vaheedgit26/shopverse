@@ -2,14 +2,16 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ .Values.autoscaling.name }}    # {{ include "pharma-service.fullname" . }}
+  name: {{ .Values.autoscaling.name }}    
+  {{- with .Values.labels }}
   labels:
-    {{- include "pharma-service.labels" . | nindent 4 }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ .Values.deployment.name }} # {{ include "pharma-service.fullname" . }}
+    name: {{ .Values.deployment.name }} 
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
