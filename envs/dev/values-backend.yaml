@@ -36,15 +36,17 @@ configmap:
 
 configmaps:
   local:
-    - configmap-backend   # file must be "configmap-backend.yaml"
+    - name: configmap-backend   
+      fileName: configmap-backend.yaml
   global:
-    - configmap-global    # file name must be "configmap-global"
+    - name: configmap-global    
       
 secrets:
   local:
-    - secret-backend      # file must be "secret-backend.yaml"
+    - name: secret-backend      
+      fileName: secret-backend.yaml
   global:
-    - secret-global       # file must be "secret-global.yaml"
+    - secret-global      
 
 podSecurityContext:
   fsGroup: 2000
