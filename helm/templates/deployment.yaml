@@ -21,34 +21,10 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
 
-      {{- /* DEFINE VARIABLES FIRST */}}
-      {{- $gcm := .Values.configmaps.global | default list }}
-      {{- $gsec := .Values.secrets.global | default list }}
-      {{- $gall := concat $gcm $gsec }}
-
-      {{- $hasLocalCM := gt (len (.Values.configmaps.local | default list)) 0 }}
-      {{- $hasLocalSec := gt (len (.Values.secrets.local | default list)) 0 }}
-      {{- $hasGlobal := gt (len $gall) 0 }}
-
-      {{- if or $hasLocalCM $hasLocalSec $hasGlobal }}
+      {{- with .Values.annotations }}
       annotations:
-        # LOCAL CONFIG checksum (only if exists)
-        {{- range (.Values.configmaps.local | default list) }}
-        checksum/{{ . }}: {{ include (print $.Template.BasePath "/" . ".yaml") $ | sha256sum }}
-        {{- end }}
-
-        # LOCAL SECRET checksum (only if exists)
-        {{- range (.Values.secrets.local | default list) }}
-        checksum/{{ . }}: {{ include (print $.Template.BasePath "/" . ".yaml") $ | sha256sum }}
-        {{- end }}
-     
-        # GLOBAL CONFIGMAP and SECRET reloader (only if exists)
-        {{- if gt (len $gall) 0 }}
-        reloader.stakater.com/match: "{{ join "," $gall }}"
-        # reloader.stakater.com/auto: "true"
-        {{- end }} 
-      {{- end }}
-        
+      {{- toYaml . | nindent 8 }}
+      {{- end }}  
     spec:
       # imagePullSecrets:
       # serviceAccountName: {{ include "pharma-service.serviceAccountName" . }}
@@ -70,44 +46,9 @@ spec:
           {{- toYaml . | nindent 12 }}
           {{- end }}
 
-          {{- $hasEnv := or
-              (gt (len (.Values.configmaps.local | default list)) 0)
-              (gt (len (.Values.configmaps.global | default list)) 0)
-              (gt (len (.Values.secrets.local | default list)) 0)
-              (gt (len (.Values.secrets.global | default list)) 0)
-          }}
-          
-          {{- if $hasEnv }}
+          {{- with .Values.envFrom }}
           envFrom:
-            # =========================
-            # CONFIGMAPS
-            # =========================
-            # LOCAL CONFIGMAPS
-            {{- range (.Values.configmaps.local | default list) }}
-            - configMapRef:
-                name: {{ . }}
-            {{- end }}
-            
-            # GLOBAL CONFIGMAPS
-            {{- range (.Values.configmaps.global | default list) }}
-            - configMapRef:
-                name: {{ . }}
-            {{- end }}
-            
-            # =========================
-            # SECRETS
-            # =========================
-            # LOCAL SECRETS
-            {{- range (.Values.secrets.local | default list) }}
-            - secretRef:
-                name: {{ . }}
-            {{- end }}
-            
-            # GLOBAL SECRETS
-            {{- range (.Values.secrets.global | default list) }}
-            - secretRef:
-                name: {{ . }}
-            {{- end }}
+          {{- toYaml . | nindent 12 }}
           {{- end }}
           
           {{- with .Values.resources }}      
