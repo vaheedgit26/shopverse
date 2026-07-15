@@ -10,19 +10,9 @@
 checksum/configmap-local-{{ .name }}: {{ include (print $.Template.BasePath "/" .fileName) $ | sha256sum }}
   {{- end }}
 
-  {{- range .global | default list }}
-checksum/configmap-global-{{ .name }}: {{ include (print $.Template.BasePath "/" .fileName) $ | sha256sum }}
-  {{- end }}
-{{- end }}
-
 {{- with .Values.secrets }}
   {{- range .local | default list }}
 checksum/secret-local-{{ .name }}: {{ include (print $.Template.BasePath "/" .fileName) $ | sha256sum }}
   {{- end }}
-
-  {{- range .global | default list }}
-checksum/secret-global-{{ .name }}: {{ include (print $.Template.BasePath "/" .fileName) $ | sha256sum }}
-  {{- end }}
-{{- end }}
 
 {{- end }}
