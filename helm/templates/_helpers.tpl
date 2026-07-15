@@ -2,6 +2,7 @@
 {{ printf "%s/%s:%s" .Values.image.uri .Values.image.name .Values.image.version }}
 {{- end }}
 
+{{/* common checksum */ }}
 {{- define "common.checksum" -}}
 
 {{- if .Values.configmaps }}
