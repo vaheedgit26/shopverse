@@ -24,11 +24,11 @@ spec:
       {{- /* DEFINE VARIABLES FIRST */}}
       {{- $gcm := .Values.configmaps.global | default list }}
       {{- $gsec := .Values.secrets.global | default list }}
-      {{- $all := concat $gcm $gsec }}
+      {{- $gall := concat $gcm $gsec }}
 
       {{- $hasLocalCM := gt (len (.Values.configmaps.local | default list)) 0 }}
       {{- $hasLocalSec := gt (len (.Values.secrets.local | default list)) 0 }}
-      {{- $hasGlobal := gt (len $all) 0 }}
+      {{- $hasGlobal := gt (len $gall) 0 }}
 
       {{- if or $hasLocalCM $hasLocalSec $hasGlobal }}
       annotations:
@@ -43,8 +43,8 @@ spec:
         {{- end }}
      
         # GLOBAL CONFIGMAP and SECRET reloader (only if exists)
-        {{- if gt (len $all) 0 }}
-        reloader.stakater.com/match: "{{ join "," $all }}"
+        {{- if gt (len $gall) 0 }}
+        reloader.stakater.com/match: "{{ join "," $gall }}"
         # reloader.stakater.com/auto: "true"
         {{- end }} 
       {{- end }}
