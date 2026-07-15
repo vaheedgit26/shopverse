@@ -81,7 +81,7 @@ probes:
       port: 8080
     initialDelaySeconds: 10
     periodSeconds: 10
-#--------------- Autoscaling ------------------------# 
+#--------------- Autoscaling -----------------------# 
 autoscaling:
   enabled: false
   name: backend-hpa
