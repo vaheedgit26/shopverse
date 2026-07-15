@@ -7,6 +7,7 @@ labels: {}
 imagePullPolicy: IfNotPresent
 terminationGracePeriodSeconds: 30
 
+configmap: {}
 configmaps: {}
 secrets: {}
 env: []
