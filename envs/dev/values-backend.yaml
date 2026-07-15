@@ -1,31 +1,32 @@
 namespace: shopverse-dev
-# ──────────────────────────────────────
-# BACKEND
-# ──────────────────────────────────────
+#--------------- Image ------------------------------#
 image:
   uri: 254405569649.dkr.ecr.us-east-1.amazonaws.com
   name: shopverse-backend
   version: v1
-  
+#--------------- Container --------------------------#
 containerName: backend
 imagePullPolicy: Always
 terminationGracePeriodSeconds: 30
-
+#--------------- Labels -----------------------------#
 labels: 
   app: shopverse
   component: backend
   env: dev
-
+#--------------- Pod Annotations --------------------#
+annotations:
+  reloader.stakater.com/auto: "true"
+#--------------- Deployment -------------------------#
 deployment:
   name: backend-deploy
   replicas: 1
-    
+#--------------- service ----------------------------#   
 service:
   name: backend-svc
   type: ClusterIP
   port: 8080
   targetPort: 8080
-
+#--------------- Configmaps & Secrets----------------#
 configmap:
   name: configmap-backend
   data:
@@ -33,21 +34,17 @@ configmap:
     DB_PORT: "3306"
     DB_NAME: "shopverse"
     FRONTEND_ORIGIN: "*"
-
-configmaps:
-  local:
-    - name: configmap-backend   
-      fileName: configmap-backend.yaml
-  global:
-    - name: configmap-global    
-      
-secrets:
-  local:
-    - name: secret-backend      
-      fileName: secret-backend.yaml
-  global:
-    - secret-global      
-
+	
+secret:
+  name: db-credentials
+  create: false
+	
+envFrom:
+  - configMapRef:
+      name: configmap-backend
+  - secretRef:
+      name: db-credentials    # Creates through ESO   
+#--------------- Security Context -------------------#
 podSecurityContext:
   fsGroup: 2000
   runAsNonRoot: true
@@ -61,7 +58,7 @@ containerSecurityContext:
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
-
+#--------------- Limits & Requests ------------------#
 resources:
   requests: 
     cpu: "100m"
@@ -69,22 +66,22 @@ resources:
   limits:
     cpu: "200m"
     memory: "256Mi"
-
+#--------------- Healthcheck Probes -----------------#
 probes:
   livenessProbe:
     httpGet:
       path: /health
       port: 8080
-      initialDelaySeconds: 15
-      periodSeconds: 30
+    initialDelaySeconds: 15
+    periodSeconds: 30
         
   readinessProbe:
     httpGet:
-    path: /health
-    port: 8080
+      path: /health
+      port: 8080
     initialDelaySeconds: 10
     periodSeconds: 10
-    
+#--------------- Autoscaling ------------------------# 
 autoscaling:
   enabled: false
   name: backend-hpa
@@ -92,3 +89,9 @@ autoscaling:
   maxReplicas: 3
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 80
+#--------------- Service Account -------------------# 
+serviceAccount:
+  create: false
+  name: backend-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/backend-role
