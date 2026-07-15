@@ -1,12 +1,15 @@
-{{- if .Values.configmap }}
+{- if .Values.configmap }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "pharma-service.fullname" . }}
+  name: {{ .Values.configmap.name }}                         # shopverse-config
+  # namespace: {{ .Values.namespace }}                       # shopverse-dev
+  {{- with .Values.labels }}
   labels:
-    {{- include "pharma-service.labels" . | nindent 4 }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 data:
-  {{- range $key, $value := .Values.configmap }}
+  {{- range $key, $value := .Values.configmap.data }}
   {{ $key }}: {{ $value | quote }}
   {{- end }}
 {{- end }}
