@@ -20,13 +20,13 @@ annotations:
 deployment:
   name: backend-deploy
   replicas: 1
-#--------------- service ----------------------------#   
+#--------------- Service ----------------------------#   
 service:
   name: backend-svc
   type: ClusterIP
   port: 8080
   targetPort: 8080
-#--------------- Configmaps & Secrets----------------#
+#--------------- Configmaps & Secrets ---------------#
 configmap:
   name: configmap-backend
   data:
