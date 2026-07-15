@@ -9,6 +9,7 @@ terminationGracePeriodSeconds: 30
 
 configmaps: {}
 secrets: {}
+env: {}
   
 imagePullSecrets: []
 podAnnotations: {}
