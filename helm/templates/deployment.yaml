@@ -9,7 +9,7 @@ metadata:
   {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.deployment.replicas }}
+  replicas: {{ .Values.deployment.replicas | default 1 }}
   {{- end }}
   selector:
     {{- with .Values.labels }}
