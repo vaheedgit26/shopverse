@@ -8,8 +8,7 @@ imagePullPolicy: IfNotPresent
 terminationGracePeriodSeconds: 30
 
 configmap: {}
-configmaps: {}
-secrets: {}
+secret: {}
 env: []
 envFrom: []
   
