@@ -26,12 +26,22 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}  
     spec:
-      # imagePullSecrets:
-      # serviceAccountName: {{ include "pharma-service.serviceAccountName" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- else }}
+      serviceAccountName: default
+      {{- end }}
+      
       {{- with .Values.podSecurityContext }}
       securityContext:
       {{- toYaml . | nindent 8 }}
       {{- end }}
+      
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
         - name: {{ .Values.containerName | default "backend" }}  # backend
@@ -100,6 +110,3 @@ spec:
       topologySpreadConstraints:
       {{- toYaml . | nindent 8 }}
       {{- end }}
-
-
-      
