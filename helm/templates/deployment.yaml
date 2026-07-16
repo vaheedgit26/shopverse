@@ -26,9 +26,12 @@ spec:
       {{- end }}
 
       {{- with .Values.annotations }}
-      {{- if and .enabled .values }}
+      {{- if and .enabled (or .enable_checksum .values) }}
       annotations:
+      {{- if .Values.annotations.enable_checksum }}
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+      {{- end }}
+      {{- with .values }}
       {{- toYaml .values | nindent 8 }}
       {{- end }}
       {{- end }} 
