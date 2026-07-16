@@ -1,0 +1,97 @@
+namespace: shopverse-dev
+#--------------- Container --------------------------#
+image:
+  uri: 254405569649.dkr.ecr.us-east-1.amazonaws.com
+  name: shopverse-backend
+  version: v1
+
+containerName: backend
+imagePullPolicy: Always
+terminationGracePeriodSeconds: 30
+#--------------- Labels -----------------------------#
+labels: 
+  app: shopverse
+  component: backend
+  env: dev
+#--------------- Pod Annotations --------------------#
+annotations:
+  reloader.stakater.com/auto: "true"
+#--------------- Deployment -------------------------#
+deployment:
+  name: backend-deploy
+  replicas: 1
+#--------------- Service ----------------------------#   
+service:
+  name: backend-svc
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+#--------------- Configmaps & Secrets ---------------#
+configmap:
+  name: configmap-backend
+  data:
+    DB_HOST: ""
+    DB_PORT: "3306"
+    DB_NAME: "shopverse"
+    FRONTEND_ORIGIN: "*"
+	
+secret:
+  name: db-credentials
+  create: false
+	
+envFrom:
+  - configMapRef:
+      name: configmap-backend
+  - secretRef:
+      name: db-credentials    # Creates through ESO   
+#--------------- Security Context -------------------#
+podSecurityContext:
+  fsGroup: 2000
+  runAsNonRoot: true
+  runAsUser: 1000
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+#--------------- Limits & Requests ------------------#
+resources:
+  requests: 
+    cpu: "100m"
+    memory: "128Mi" 
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
+#--------------- Healthcheck Probes -----------------#
+probes:
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 8080
+    initialDelaySeconds: 15
+    periodSeconds: 30
+        
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: 8080
+    initialDelaySeconds: 10
+    periodSeconds: 10
+#--------------- Autoscaling -----------------------# 
+autoscaling:
+  enabled: false
+  name: backend-hpa
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+#--------------- Service Account -------------------# 
+serviceAccount:
+  create: false
+  name: backend-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/backend-role
