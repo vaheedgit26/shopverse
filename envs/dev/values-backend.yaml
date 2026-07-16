@@ -56,12 +56,12 @@ configmap:
     DB_HOST: ""
     DB_PORT: "3306"
     DB_NAME: "shopverse"
-    FRONTEND_ORIGIN: "*"
+    FRONTEND_ORIGIN: "*"   
 	
 secret:
   name: db-credentials
-  create: false    # Creates through ESO
-	
+  create: false    # Creates through ESO    
+  
 envFrom:
   enabled: true
   values:
