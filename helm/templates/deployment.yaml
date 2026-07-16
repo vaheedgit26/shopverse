@@ -26,32 +26,32 @@ spec:
       {{- end }}
 
       {{- with .Values.annotations }}
-      {{- if and .enabled .data }}
+      {{- if and .enabled .values }}
       annotations:
-      {{- toYaml .data | nindent 8 }}
+      {{- toYaml .values | nindent 8 }}
       {{- end }}
       {{- end }} 
 
     spec:
       {{- with .Values.imagePullSecrets }}
-      {{- if and .enabled .data }}
+      {{- if and .enabled .values }}
       imagePullSecrets:
-      {{- toYaml .data | nindent 8 }}
+      {{- toYaml .values | nindent 8 }}
       {{- end }}
       {{- end }}
       
       {{- with .Values.serviceAccount }}
-      {{- if and .create .data }}
-      serviceAccountName: {{ .Values.serviceAccount.data.name }}
+      {{- if and .create .values }}
+      serviceAccountName: {{ .Values.serviceAccount.values.name }}
       {{- else }}
       serviceAccountName: default
       {{- end }}
       {{- end }}
       
       {{- with .Values.podSecurityContext }}
-      {{- if and .enabled .data }}
+      {{- if and .enabled .values }}
       securityContext:
-      {{- toYaml .data | nindent 8 }}
+      {{- toYaml .values | nindent 8 }}
       {{- end }}
       {{- end }}
       
@@ -65,85 +65,85 @@ spec:
               protocol: TCP
               
           {{- with .Values.containerSecurityContext }}
-          {{- if and .enabled .data }}
+          {{- if and .enabled .values }}
           securityContext:
-          {{- toYaml .data | nindent 12 }}
+          {{- toYaml .values | nindent 12 }}
           {{- end }}
           {{- end }}
 
           {{- with .Values.envFrom }}
-          {{- if and .enabled .data }}
+          {{- if and .enabled .values }}
           envFrom:
-          {{- toYaml .data | nindent 12 }}
+          {{- toYaml .values | nindent 12 }}
           {{- end }}
           {{- end }}
           
           {{- with .Values.resources }}  
-          {{- if and .enabled .data }}    
+          {{- if and .enabled .values }}    
           resources:
-          {{- toYaml .data | nindent 12 }}
+          {{- toYaml .values | nindent 12 }}
           {{- end }}
           {{- end }}
 
           {{- with .Values.startupProbe }}
-          {{- if and .enabled .data }}
+          {{- if and .enabled .values }}
           startupProbe:
-          {{- toYaml .data | nindent 12 }}
+          {{- toYaml .values | nindent 12 }}
           {{- end }}
           {{- end }}
 
           {{- with .Values.readinessProbe }}
-          {{- if and .enabled .data }}
+          {{- if and .enabled .values }}
           readinessProbe:
-          {{- toYaml .data | nindent 12 }}
+          {{- toYaml .values | nindent 12 }}
           {{- end }}
           {{- end }}
 
           {{- with .Values.livenessProbe }}
-          {{- if and .enabled .data }}
+          {{- if and .enabled .values }}
           livenessProbe:
-          {{- toYaml .data | nindent 12 }}
+          {{- toYaml .values | nindent 12 }}
           {{- end }}
           {{- end }}
 
           {{- with .Values.volumeMounts }}
-          {{- if and .enabled .data }}
+          {{- if and .enabled .values }}
           volumeMounts:
-          {{- toYaml .data | nindent 12 }}
+          {{- toYaml .values | nindent 12 }}
           {{- end }}
           {{- end }}
           
       {{- with .Values.volumes }}
-      {{- if and .enabled .data }}    
+      {{- if and .enabled .values }}    
       volumes:
-      {{- toYaml .data | nindent 8 }}
+      {{- toYaml .values | nindent 8 }}
       {{- end }}
       {{- end }}
 
       {{- with .Values.nodeSelector }}
-      {{- if and .enabled .data }}
+      {{- if and .enabled .values }}
       nodeSelector:
-      {{- toYaml .data | nindent 8 }}
+      {{- toYaml .values | nindent 8 }}
       {{- end }}
       {{- end }}
 
       {{- with .Values.affinity }}
-      {{- if and .enabled .data }}
+      {{- if and .enabled .values }}
       affinity:
-      {{- toYaml .data | nindent 8 }}
+      {{- toYaml .values | nindent 8 }}
       {{- end }}
       {{- end }}
 
       {{- with .Values.tolerations }}
-      {{- if and .enabled .data }}
+      {{- if and .enabled .values }}
       tolerations:
-      {{- toYaml .data | nindent 8 }}
+      {{- toYaml .values | nindent 8 }}
       {{- end }}
       {{- end }}
 
       {{- with .Values.topologySpreadConstraints }}
-      {{- if and .enabled .data }}
+      {{- if and .enabled .values }}
       topologySpreadConstraints:
-      {{- toYaml .data | nindent 8 }}
+      {{- toYaml .values | nindent 8 }}
       {{- end }}
       {{- end }}
