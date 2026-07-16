@@ -96,8 +96,8 @@ readinessProbe:
       path: /health
       port: 8080
     initialDelaySeconds: 15
-    periodSeconds: 10
-	
+    periodSeconds: 10         
+
 livenessProbe:
   enabled: true
   values:
