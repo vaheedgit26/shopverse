@@ -28,6 +28,7 @@ service:
 annotations:
   enabled: true
   enable_checksum: true
+  checksum_file: configmap.yaml
   values:
     reloader.stakater.com/auto: "true"
 #--------------- Security Context -------------------#
