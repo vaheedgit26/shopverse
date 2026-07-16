@@ -27,19 +27,19 @@ service:
 #--------------- Pod Annotations --------------------#
 annotations:
   enabled: true
-  data:
+  values:
     reloader.stakater.com/auto: "true"
 #--------------- Security Context -------------------#
 podSecurityContext:
   enabled: true
-  data:
+  values:
     fsGroup: 2000
     runAsNonRoot: true
     runAsUser: 1000
 
 containerSecurityContext:
   enabled: true
-  data:
+  values:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
@@ -51,7 +51,7 @@ containerSecurityContext:
 configmap:
   enabled: true
   name: configmap-backend
-  data:
+  values:
     DB_HOST: ""
     DB_PORT: "3306"
     DB_NAME: "shopverse"
@@ -63,7 +63,7 @@ secret:
 	
 envFrom:
   enabled: true
-  data:
+  values:
     - configMapRef:
         name: configmap-backend
     - secretRef:
@@ -71,7 +71,7 @@ envFrom:
 #--------------- Limits & Requests ------------------#
 resources:
   enabled: true
-  data:
+  values:
     requests: 
       cpu: "100m"
       memory: "128Mi" 
@@ -80,15 +80,17 @@ resources:
       memory: "256Mi"
 #--------------- Healthcheck Probes ----------------# 
 startupProbe:
-  httpGet:
-    path: /health
-    port: 8080
-  failureThreshold: 10
-  periodSeconds: 10
+  enabled: true
+  values:
+    httpGet:
+      path: /health
+      port: 8080
+    failureThreshold: 10
+    periodSeconds: 10
   
 readinessProbe:
   enabled: true
-  data:
+  values:
     httpGet:
       path: /health
       port: 8080
@@ -97,7 +99,7 @@ readinessProbe:
 	
 livenessProbe:
   enabled: true
-  data:
+  values:
     httpGet:
       path: /health
       port: 8080
@@ -106,7 +108,7 @@ livenessProbe:
 #--------------- Autoscaling -----------------------# 
 autoscaling:
   enabled: false
-  data:
+  values:
     name: backend-hpa
     minReplicas: 1
     maxReplicas: 3
@@ -115,7 +117,7 @@ autoscaling:
 #--------------- Service Account -------------------# 
 serviceAccount:
   create: false
-  data:
+  values:
     name: backend-sa
     annotations:
       eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/backend-role
