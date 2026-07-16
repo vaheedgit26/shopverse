@@ -77,6 +77,13 @@ spec:
           {{- toYaml .values | nindent 12 }}
           {{- end }}
           {{- end }}
+
+          {{- with .Values.env }}          
+          {{- if and .enabled .values }}
+          env:
+          {{- toYaml .values | nindent 12 }}
+          {{- end }}
+          {{- end }}
           
           {{- with .Values.resources }}  
           {{- if and .enabled .values }}    
