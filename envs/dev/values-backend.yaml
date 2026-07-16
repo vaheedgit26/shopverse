@@ -9,13 +9,11 @@ containerName: backend
 imagePullPolicy: Always
 terminationGracePeriodSeconds: 30
 #--------------- Labels -----------------------------#
-labels: 
-  app: shopverse
-  component: backend
-  env: dev
-#--------------- Pod Annotations --------------------#
-annotations:
-  reloader.stakater.com/auto: "true"
+labels:
+  app.kubernetes.io/name: shopverse
+  app.kubernetes.io/component: backend
+  app.kubernetes.io/env: dev
+  app.kubernetes.io/version: 1.0.0
 #--------------- Deployment -------------------------#
 deployment:
   name: backend-deploy
@@ -26,8 +24,32 @@ service:
   type: ClusterIP
   port: 8080
   targetPort: 8080
+#--------------- Pod Annotations --------------------#
+annotations:
+  enabled: true
+  data:
+    reloader.stakater.com/auto: "true"
+#--------------- Security Context -------------------#
+podSecurityContext:
+  enabled: true
+  data:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+
+containerSecurityContext:
+  enabled: true
+  data:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
 #--------------- Configmaps & Secrets ---------------#
 configmap:
+  enabled: true
   name: configmap-backend
   data:
     DB_HOST: ""
@@ -40,58 +62,60 @@ secret:
   create: false
 	
 envFrom:
-  - configMapRef:
-      name: configmap-backend
-  - secretRef:
-      name: db-credentials    # Creates through ESO   
-#--------------- Security Context -------------------#
-podSecurityContext:
-  fsGroup: 2000
-  runAsNonRoot: true
-  runAsUser: 1000
-
-containerSecurityContext:
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
+  enabled: true
+  data:
+    - configMapRef:
+        name: configmap-backend
+    - secretRef:
+        name: db-credentials    # Creates through ESO   
 #--------------- Limits & Requests ------------------#
 resources:
-  requests: 
-    cpu: "100m"
-    memory: "128Mi" 
-  limits:
-    cpu: "200m"
-    memory: "256Mi"
-#--------------- Healthcheck Probes -----------------#
-probes:
-  livenessProbe:
+  enabled: true
+  data:
+    requests: 
+      cpu: "100m"
+      memory: "128Mi" 
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+#--------------- Healthcheck Probes ----------------# 
+startupProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  failureThreshold: 10
+  periodSeconds: 10
+  
+readinessProbe:
+  enabled: true
+  data:
     httpGet:
       path: /health
       port: 8080
     initialDelaySeconds: 15
-    periodSeconds: 30
-        
-  readinessProbe:
+    periodSeconds: 10
+	
+livenessProbe:
+  enabled: true
+  data:
     httpGet:
       path: /health
       port: 8080
-    initialDelaySeconds: 10
-    periodSeconds: 10
+    initialDelaySeconds: 20
+    periodSeconds: 30
 #--------------- Autoscaling -----------------------# 
 autoscaling:
   enabled: false
-  name: backend-hpa
-  minReplicas: 1
-  maxReplicas: 3
-  targetCPUUtilizationPercentage: 70
-  targetMemoryUtilizationPercentage: 80
+  data:
+    name: backend-hpa
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
 #--------------- Service Account -------------------# 
 serviceAccount:
   create: false
-  name: backend-sa
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/backend-role
+  data:
+    name: backend-sa
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/backend-role
