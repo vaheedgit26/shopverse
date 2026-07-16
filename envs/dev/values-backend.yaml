@@ -27,8 +27,8 @@ service:
 #--------------- Pod Annotations --------------------#
 annotations:
   enabled: true
+  enable_checksum: true
   values:
-    #checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     reloader.stakater.com/auto: "true"
 #--------------- Security Context -------------------#
 podSecurityContext:
