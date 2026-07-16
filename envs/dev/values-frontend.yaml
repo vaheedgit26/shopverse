@@ -28,7 +28,7 @@ service:
 annotations:
   enabled: false
   enable_checksum: false
-  values:
+  values: {}
     # checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     # reloader.stakater.com/auto: "true"
 #--------------- Security Context -------------------#
