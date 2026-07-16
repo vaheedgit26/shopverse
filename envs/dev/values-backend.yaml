@@ -51,7 +51,7 @@ containerSecurityContext:
 #--------------- Configmaps & Secrets ---------------#
 configmap:
   enabled: true
-  name: configmap-backend
+  name: backend-configmap
   values:
     DB_HOST: ""
     DB_PORT: "3306"
@@ -60,13 +60,13 @@ configmap:
 	
 secret:
   name: db-credentials
-  create: false
+  create: false    # Creates through ESO
 	
 envFrom:
   enabled: true
   values:
     - configMapRef:
-        name: configmap-backend
+        name: backend-configmap
     - secretRef:
         name: db-credentials    # Creates through ESO   
 #--------------- Limits & Requests ------------------#
